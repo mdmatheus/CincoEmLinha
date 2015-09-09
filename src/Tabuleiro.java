@@ -7,7 +7,7 @@ public class Tabuleiro {
 		campo = new Campo[tamanhoDoCampo][tamanhoDoCampo];
 		for (int linha = 0; linha < tamanhoDoCampo; linha++) {
 			for (int coluna = 0; coluna < tamanhoDoCampo; coluna++) {
-				campo[linha][coluna] = new Campo("");
+				campo[linha][coluna] = new Campo();
 				campo[linha][coluna].linha = linha;
 				campo[linha][coluna].coluna = coluna;
 			}
@@ -23,8 +23,7 @@ public class Tabuleiro {
 				colunaC = coluna + z + i;
 				linhaD = linha + z - i;
 
-				if (colunaC >= 0 && linhaC >= 0 && colunaC < tamanhoDoCampo
-						&& linhaC < tamanhoDoCampo) {
+				if (colunaC >= 0 && linhaC >= 0 && colunaC < tamanhoDoCampo && linhaC < tamanhoDoCampo) {
 
 					if (cincoXEmSeguida(linha, colunaC)) {
 						cinco1++;
@@ -77,8 +76,7 @@ public class Tabuleiro {
 
 		return false;
 	}
-	
-	
+
 	public boolean checar5O(int linha, int coluna) {
 		int z = -4, cinco1 = 0, cinco2 = 0, cinco3 = 0, cinco4 = 0;
 		int linhaC, colunaC, linhaD;
@@ -88,8 +86,7 @@ public class Tabuleiro {
 				colunaC = coluna + z + i;
 				linhaD = linha + z - i;
 
-				if (colunaC >= 0 && linhaC >= 0 && colunaC < tamanhoDoCampo
-						&& linhaC < tamanhoDoCampo) {
+				if (colunaC >= 0 && linhaC >= 0 && colunaC < tamanhoDoCampo && linhaC < tamanhoDoCampo) {
 
 					if (cincoOEmSeguida(linha, colunaC)) {
 						cinco1++;
@@ -146,7 +143,7 @@ public class Tabuleiro {
 	private boolean cincoXEmSeguida(int linha, int coluna) {
 		return this.campo[linha][coluna].estadoX;
 	}
-	
+
 	private boolean cincoOEmSeguida(int linha, int coluna) {
 		return this.campo[linha][coluna].estadoO;
 	}
@@ -161,10 +158,6 @@ public class Tabuleiro {
 
 	public void setEstadoO(int x, int y) {
 		this.campo[x][y].estadoO = true;
-	}
-
-	public void setNome(int x, int y, String nome) {
-		this.campo[x][y].setNome(nome);
 	}
 
 }

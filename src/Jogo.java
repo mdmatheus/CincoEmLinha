@@ -17,6 +17,7 @@ public class Jogo implements ActionListener {
 	private boolean vezX = true;
 
 	private Tabuleiro tabuleiro;
+	private TabuleiroV tabuleiroV;
 
 	private JLabel lblNewLabel;
 
@@ -62,81 +63,92 @@ public class Jogo implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		tabuleiro = new Tabuleiro();
+		tabuleiroV = new TabuleiroV();
 
 		for (int linha = 0; linha < 15; linha++) {
 			for (int coluna = 0; coluna < 15; coluna++) {
-				panel.add(tabuleiro.getCampoByXY(linha, coluna));
-				tabuleiro.getCampoByXY(linha, coluna).setPreferredSize(
-						new Dimension(50, 50));
-				tabuleiro.getCampoByXY(linha, coluna).addActionListener(this);
+				visao(panel, linha, coluna);
 			}
 		}
 
 		lblNewLabel = new JLabel("Resultado");
 		panel.add(lblNewLabel);
 
-		for (int i = 0; i < array1.length; i++) {
-			array1[i] = i;
-		}
+//		for (int i = 0; i < array1.length; i++) {
+//			array1[i] = i;
+//		}
+//
+//		for (int i = 0; i < array2.length; i++) {
+//			array2[i] = i;
+//		}
+//
+//		Collections.shuffle(Arrays.asList(array1));
+//		Collections.shuffle(Arrays.asList(array2));
+//
+//		boolean achou = false;
+//		for (int i = 0; i < array1.length; i++) {
+//			for (int j = 0; j < array2.length; j++) {
+//
+//				if (!achou) {
+//
+//					if (vezX == true) {
+//						tabuleiro.setEstadoX(array1[i], array2[j]);
+//						tabuleiroV.setNome(array1[i], array2[j], "X");
+//						vezX = false;
+//					} else {
+//						tabuleiro.setEstadoO(array1[i], array2[j]);
+//						tabuleiroV.setNome(array1[i], array2[j], "O");
+//						vezX = true;
+//					}
+//					visaoRemoveListener(i, j);
+//
+//					if (tabuleiro.checar5X(array1[i], array2[j])) {
+//						lblNewLabel.setText("X GANHOU");
+//						achou = true;
+//					} else if (tabuleiro.checar5O(array1[i], array2[j])) {
+//						lblNewLabel.setText("O GANHOU");
+//						achou = true;
+//					}
+//
+//				}
+//			}
+//
+//		}
 
-		for (int i = 0; i < array2.length; i++) {
-			array2[i] = i;
-		}
+	}
 
-		Collections.shuffle(Arrays.asList(array1));
-		Collections.shuffle(Arrays.asList(array2));
+	private void visaoRemoveListener(int i, int j) {
+		tabuleiroV.removeListener(array1[i], array2[j], this);
+	}
 
-		boolean achou = false;
-		for (int i = 0; i < array1.length; i++) {
-			for (int j = 0; j < array2.length; j++) {
-
-				if (!achou) {
-
-					if (vezX == true) {
-						tabuleiro.setEstadoX(array1[i], array2[j]);
-						tabuleiro.setNome(array1[i], array2[j], "X");
-						vezX = false;
-					} else {
-						tabuleiro.setEstadoO(array1[i], array2[j]);
-						tabuleiro.setNome(array1[i], array2[j], "O");
-						vezX = true;
-					}
-					tabuleiro.getCampoByXY(array1[i], array2[j])
-							.removeActionListener(this);
-
-					if (tabuleiro.checar5X(array1[i], array2[j])) {
-						lblNewLabel.setText("X GANHOU");
-						achou = true;
-					} else if (tabuleiro.checar5O(array1[i], array2[j])) {
-						lblNewLabel.setText("O GANHOU");
-						achou = true;
-					}
-
-				}
-			}
-
-		}
-
+	private void visao(JPanel panel, int linha, int coluna) {
+		panel.add(tabuleiroV.getCampoByXY(linha, coluna));
+		tabuleiroV.setSize(linha, coluna, 50, 50);
+		tabuleiroV.addListener(linha, coluna, this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int linha = ((Campo) e.getSource()).linha;
-		int coluna = ((Campo) e.getSource()).coluna;
+		int linha = ((CampoV) e.getSource()).getLinha();
+		int coluna = ((CampoV) e.getSource()).getColuna();
 
 		if (vezX == true) {
 			tabuleiro.setEstadoX(linha, coluna);
-			tabuleiro.setNome(linha, coluna, "X");
+			tabuleiroV.setNome(linha, coluna, "X");
 			vezX = false;
 		} else {
 			tabuleiro.setEstadoO(linha, coluna);
-			tabuleiro.setNome(linha, coluna, "O");
+			tabuleiroV.setNome(linha, coluna, "O");
 			vezX = true;
 		}
-		tabuleiro.getCampoByXY(linha, coluna).removeActionListener(this);
+		tabuleiroV.removeListener(linha, coluna, this);
 
 		if (tabuleiro.checar5X(linha, coluna)) {
-			lblNewLabel.setText("CINCOO");
+			lblNewLabel.setText("X GANHOU");
+			tabuleiroV.setNome(linha, coluna, "X!!");
+		} else if (tabuleiro.checar5O(linha, coluna)) {
+			lblNewLabel.setText("O GANHOU");
+			tabuleiroV.setNome(linha, coluna, "O!!");
 		}
 
 	}
